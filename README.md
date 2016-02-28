@@ -1,70 +1,53 @@
-# MiRouterSS #
---------------------
-More easier to install ShadowSocks on your MiRouter.
+#MiRouterSS
+More easier to use ShadowSocks on your MiRouter.
 
-## What is ShadowSocks
---------------------
-ShadowSocks is a tool that can help you to visit Google, Youtube, etc. But before you install it make sure that you have ShadowSocks server configuration.
+Ps: This project is based on the bazingaterry/ShadowsocksForMiRouter(Github) and adds useful scripts.
 
-If you want to know more about ShadowSocks, please search it on Google
+Author: Jacky
 
-##Requirements:
-**Minimum:**
+##**Include**
+1. Install/Unistall/Reinstall script
+2. ShadowSocks For MiRouter
+3. Some DNS lists
 
+##**Requirements:**
 1. MiRouter >= R1D (MiRouterSS doesn't support MiRouter Mini)
-2. MiRouter System Version >= 2.0
-3. Your MiRouter has already open SSH
-
-**ShadowSocks server configuration**
-
+2. Your MiRouter has already open SSH
+3. You have ShadowSocks server account
 Such as
+>"server":"${serverip}",
+>"server_port":${serverport},
+>"local_port":${localport},
+>"password":"${shadowsockspwd}",
+>"timeout":60,
+>"method":"${method}"
 
->    "server":"${serverip}",
-
->    "server_port":${serverport},
-
->    "local_port":${localport},
-
->    "password":"${shadowsockspwd}",
-
->    "timeout":60,
-
->    "method":"${method}"
-
-## MiRouterSS include
------------------------
-+ Install/Unistall/Reinstall script
-+ ShadowSocks For MiRouter
-+ Some DNS list
-
-## How to install it
------------------------
-
-#### 1. SSH to your MiRouter.
-
-#### 2. Enter the userdisk directory
+##**How to install it**
+1. SSH to your MiRouterSS
+2. Enter the userdisk directory
 ```
 cd /userdisk/data/
 ```
-#### 3. Download MiRouterSS
+3. Install MiRouterSS
 ```
-wget https://raw.githubusercontent.com/Jackyxyz/MiRouterSS/master/MiRouter0.1.tar.gz && MiRouter0.1.tar.gz && cd MiRouter0.1
-```
-#### 4. Give permission to scripts
-```
-chmod +x *.sh
-```
-#### 5. Run install shell script
-```
-sh install.sh
+wget http://cdn.jackyu.cn/download/MiRouterSS.tar.gz && tar dxf MiRouterSS.tar.gz && cd MiRouterSS && chmod +x *.sh && sh install.sh
 ```
 
-## Tips
----------------
-If you want to unistall Shadowsocks, please run uninstall.sh.
-
-After updata the MiRouter system please run reinstall.sh.
-
+##**Tips**
+1. Uninstall MiRouterSS
+```
+cd /userdisk/data/MiRouterSS/ && sh uninstall.sh
+```
+2. After you update MiRouter's system, please run
+```
+cd /userdisk/data/MiRouterSS/ && sh reinstall.sh
+```
+3. Common commands
+```
+/etc/init.d/dnsmasq restart （Restart dnsmasq)
+/etc/init.d/firewall restart （Restart firewall)
+/etc/init.d/shadowsocks start/stop (Start/Stop ShadowScoks)
+/etc/init.d/shadowsocks enable/disable (Enable/Disable Boot)
+```
 ##Special thanks to
----------------
-bazingaterry/ShadowsocksForMiRouter
+bazingaterry/ShadowsocksForMiRouter (Github)
