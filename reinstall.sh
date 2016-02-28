@@ -9,25 +9,18 @@ echo "              MiRouterSS v0.1 Written by Jacky               "
 echo ""
 echo "-------------------------------------------------------------"
 
-# Make sure Shadowsocks has not been installed
-if [[ -f /etc/firewall.user.back ]]; then
-  echo "Error: You have installed Shadowsocks. Please remove it after update the MiRouter!" 1>&2
-  exit 1
-fi
-
 # Make sure only root can run our script
 if [[ `id -u` -ne 0 ]]; then
    echo "Error: This script must be run as root!" 1>&2
    exit 1
 fi
 
+echo "Reinstalling MiRouterSS..."
 # Stop ss-redir process
-echo "Stop ss-redir process..."
 /etc/init.d/shadowsocks stop
 /etc/init.d/shadowsocks disable
 
 #uninstall shadowsocks
-echo "Deleting Shadowsocks..."
 mount / -o rw,remount
 rm -f /usr/bin/ss-redir
 sync
@@ -37,25 +30,18 @@ cd /userdisk/data/
 rm -rf MiRouterSS
 
 # delete config file
-echo "Deleting Shadowsocks config files..."
 rm -rf /etc/shadowsocks
 mv -f /etc/firewall.user.back /etc/firewall.user
 rm -f /etc/dnsmasq.d/fgserver.conf
 rm -f /etc/dnsmasq.d/fgset.conf
 
-
 #restart all service
-echo "Restart all service..."
 /etc/init.d/dnsmasq restart
 /etc/init.d/firewall restart
 
 # delete shadowsocks init file
-echo "Deleting shadowsocks init file..."
 rm -f /etc/init.d/shadowsocks
-echo "Shadowsocks uninstall success!"
-echo ""
 
-echo "Reinstall Shadowsocks"
 # Uncompress ShadowSocks
 cd /userdisk/data/
 rm -f ShadowSocksForMiRouter.tar.gz

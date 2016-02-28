@@ -5,7 +5,7 @@ echo "-------------------------------------------------------------"
 echo ""
 echo "              Install Shadowsocks For Miwifi                 "
 echo ""
-echo "             MiRouterSS v0.1 Written by Jacky                "
+echo "                     MiRouterSS v0.1                         "
 echo ""
 echo "-------------------------------------------------------------"
 
