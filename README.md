@@ -13,14 +13,15 @@ Author: Jacky
 ##**Requirements:**
 1. MiRouter >= R1D (MiRouterSS doesn't support MiRouter Mini)
 2. Your MiRouter has already open SSH
-3. You have ShadowSocks server account
-Such as
->"server":"${serverip}",
->"server_port":${serverport},
->"local_port":${localport},
->"password":"${shadowsockspwd}",
->"timeout":60,
->"method":"${method}"
+3. You have ShadowSocks server account, such as
+
+>Server IP
+
+>Server Port
+
+>Server Password
+
+>Method
 
 ##**How to install it**
 1. SSH to your MiRouterSS
@@ -49,5 +50,6 @@ cd /userdisk/data/MiRouterSS/ && sh reinstall.sh
 /etc/init.d/shadowsocks start/stop (Start/Stop ShadowScoks)
 /etc/init.d/shadowsocks enable/disable (Enable/Disable Boot)
 ```
+
 ##Special thanks to
 bazingaterry/ShadowsocksForMiRouter (Github)
