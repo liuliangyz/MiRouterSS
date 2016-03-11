@@ -1,14 +1,18 @@
 #!/bin/sh
 
+Ver='1.0'
+
 clear
 echo "-------------------------------------------------------------"
 echo ""
-echo "             MiRouterSS v0.1 Written by Jacky                "
+echo "             MiRouterSS v${LNMP_Ver} Written by Jacky        "
 echo ""
 echo "-------------------------------------------------------------"
 
+read -p "Do you want to unistall MiRouterSS ? (Y/n)" uninstallSS
+if [[ "$uninstallSS" = "Y" ]]; then
 # Make sure you have install Shadowsocks
-if [[ ! -f /etc/firewall.user.back ]]; then
+if [[ ! -f /etc/firewall.user.bak ]]; then
 	echo "Error: You haven't install Shadowsocks!"
 	exit 1
 fi
@@ -18,12 +22,12 @@ if [[ `id -u` -ne 0 ]]; then
    echo "Error: This script must be run as root!" 1>&2
    exit 1
 fi
-# Stop ss-redir process
-echo "Stop ss-redir process..."
+# Stop Shadowsocks process
+echo "Stop Shadowsocks process..."
 /etc/init.d/shadowsocks stop
 /etc/init.d/shadowsocks disable
 
-#uninstall shadowsocks
+# Uninstall shadowsocks
 echo "Deleting Shadowsocks..."
 mount / -o rw,remount
 rm -f /usr/bin/ss-redir
@@ -33,22 +37,23 @@ mount / -o ro,remount
 cd /userdisk/data/
 rm -rf MiRouterSS
 
-# delete config file
+# Delete config file
 echo "Deleting Shadowsocks config files..."
 rm -rf /etc/shadowsocks
-mv -f /etc/firewall.user.back /etc/firewall.user
+mv -f /etc/firewall.user.bak /etc/firewall.user
 rm -f /etc/dnsmasq.d/fgserver.conf
 rm -f /etc/dnsmasq.d/fgset.conf
 
 
-#restart all service
+# Restart all service
 echo "Restart all service..."
 /etc/init.d/dnsmasq restart
 /etc/init.d/firewall restart
 
-# delete shadowsocks init file
+# Delete shadowsocks init file
 echo "Deleting shadowsocks init file..."
 rm -f /etc/init.d/shadowsocks
 echo "Shadowsocks uninstall success!"
 echo ""
+fi
 exit 0 

@@ -1,14 +1,18 @@
 #!/bin/sh
 
+Ver='1.0'
+
 clear
 echo "-------------------------------------------------------------"
 echo ""
-echo "              Reinstall Shadowsocks For Miwifi               "
+echo "              Reinstall Shadowsocks For MiRouter             "
 echo ""
-echo "              MiRouterSS v0.1 Written by Jacky               "
+echo "              MiRouterSS v${LNMP_Ver} Written by Jacky       "
 echo ""
 echo "-------------------------------------------------------------"
 
+read -p "Do you want to reinstall MiRouterSS ？ (Y/n)" reinstallSS
+if [[ "$reinstallSS" = "Y" ]]; then
 # Make sure only root can run our script
 if [[ `id -u` -ne 0 ]]; then
    echo "Error: This script must be run as root!" 1>&2
@@ -20,7 +24,7 @@ echo "Reinstalling MiRouterSS..."
 /etc/init.d/shadowsocks stop
 /etc/init.d/shadowsocks disable
 
-#uninstall shadowsocks
+# Uninstall shadowsocks
 mount / -o rw,remount
 rm -f /usr/bin/ss-redir
 sync
@@ -29,34 +33,36 @@ mount / -o ro,remount
 cd /userdisk/data/
 rm -rf MiRouterSS
 
-# delete config file
+# Delete config file
 rm -rf /etc/shadowsocks
-mv -f /etc/firewall.user.back /etc/firewall.user
+mv -f /etc/firewall.user.bak /etc/firewall.user
 rm -f /etc/dnsmasq.d/fgserver.conf
 rm -f /etc/dnsmasq.d/fgset.conf
 
-#restart all service
+# Restart all service
 /etc/init.d/dnsmasq restart
 /etc/init.d/firewall restart
 
-# delete shadowsocks init file
+# Delete shadowsocks init file
 rm -f /etc/init.d/shadowsocks
 
 # Uncompress ShadowSocks
 cd /userdisk/data/
-rm -f ShadowSocksForMiRouter.tar.gz
-cp -f MiRouterSS/ShadowSocksForMiRouter.tar.gz ./
-tar zxf ShadowSocksForMiRouter.tar.gz
+if [[ -f MiRouterSS.tar.gz ]]; then
+rm -f MiRouterSS.tar.gz && rm -f MiRouterSS
+fi
+wget http://dl.jackyu.cn/attachments/MiRouterSS/MiRouterSS.tar.gz
+tar zxf MiRouterSS.tar.gz
 
 # Install shadowsocks ss-redir to /usr/bin
 mount / -o rw,remount
-cp -f ./ShadowSocksForMiRouter/ss-redir  /usr/bin/ss-redir
+cp -f ./MiRouterSS/ss-redir  /usr/bin/ss-redir
 chmod +x /usr/bin/ss-redir
 sync
 mount / -o ro,remount
 
 # Config shadowsocks init script
-cp ./ShadowSocksForMiRouter/shadowsocks /etc/init.d/shadowsocks
+cp ./MiRouterSS/shadowsocks /etc/init.d/shadowsocks
 chmod +x /etc/init.d/shadowsocks
 
 # Config ShadowSocks setting
@@ -68,7 +74,7 @@ curl https://raw.githubusercontent.com/Jackyxyz/MiRouterSS/master/fgserver.conf 
 curl https://raw.githubusercontent.com/Jackyxyz/MiRouterSS/master/fgset.conf --insecure > /etc/dnsmasq.d/fgset.conf
 
 #config firewall
-cp -f /etc/firewall.user /etc/firewall.user.back
+cp -f /etc/firewall.user /etc/firewall.user.bak
 echo "ipset -N setmefree iphash -! " >> /etc/firewall.user
 echo "iptables -t nat -A PREROUTING -p tcp -m set --match-set setmefree dst -j REDIRECT --to-port ${localport}" >> /etc/firewall.user
 
@@ -85,12 +91,7 @@ echo "-------------------------------------------------------------"
 echo ""
 echo "       Congratulations, MiRouterSS Reinstalled complete!     "
 echo ""
-echo "           Now, you can visit Google, Youtube, etc.          "
-echo ""
-echo "                            Notice                           "
-echo ""
-echo " Don't forget to run reinstall.sh after update the MiRouter! "
-echo ""
 echo "-------------------------------------------------------------"
 echo ""
+fi
 exit 0
