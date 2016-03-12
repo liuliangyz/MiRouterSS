@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 echo ""
 echo "              Reinstall Shadowsocks For MiRouter             "
 echo ""
-echo "              MiRouterSS v${LNMP_Ver} Written by Jacky       "
+echo "              MiRouterSS v${Ver} Written by Jacky            "
 echo ""
 echo "-------------------------------------------------------------"
 

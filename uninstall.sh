@@ -5,7 +5,7 @@ Ver='1.0'
 clear
 echo "-------------------------------------------------------------"
 echo ""
-echo "             MiRouterSS v${LNMP_Ver} Written by Jacky        "
+echo "             MiRouterSS v${Ver} Written by Jacky             "
 echo ""
 echo "-------------------------------------------------------------"
 

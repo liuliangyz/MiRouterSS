@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 echo ""
 echo "              Install Shadowsocks For MiRouter               "
 echo ""
-echo "              MiRouterSS v${LNMP_Ver} Written by Jacky       "
+echo "              MiRouterSS v${Ver} Written by Jacky            "
 echo ""
 echo "-------------------------------------------------------------"
 
@@ -16,7 +16,7 @@ if [[ -f /etc/firewall.user.bak ]]; then
   echo "Error: You have installed Shadowsocks." 1>&2
   exit 1
 fi
-ech
+
 # Make sure only root can run our script
 if [[ `id -u` -ne 0 ]]; then
  echo "Error: This script must be run as root!" 1>&2
@@ -38,7 +38,6 @@ mount / -o rw,remount
 cp -f ./MiRouterSS/ss-redir  /usr/bin/ss-redir
 chmod +x /usr/bin/ss-redir
 sync
-mount / -o ro,remount
 
 # Config shadowsocks init script
 cp ./MiRouterSS/shadowsocks /etc/init.d/shadowsocks
@@ -76,9 +75,6 @@ cat > /etc/shadowsocks/config.json<<-EOF
   "method":"${method}"
 }
 EOF
-
-# Backup ShadowSocks Settings
-cp -f /etc/shadowsocks/config.json /userdisk/data/MiRouterSS/Backup/config.json
 fi
 # Config dnsmasq
 mkdir -p /etc/dnsmasq.d
@@ -96,9 +92,14 @@ echo "iptables -t nat -A PREROUTING -p tcp -m set --match-set setmefree dst -j R
 /etc/init.d/shadowsocks start
 /etc/init.d/shadowsocks enable
 
+# Backup ShadowSocks Settings
+cp -f /etc/shadowsocks/config.json /userdisk/data/MiRouterSS/Backup/config.json
+
 # Install successfully
 rm -rf /userdisk/data/MiRouterSS.tar.gz
 rm -rf /userdisk/data/install.sh
+mount / -o ro,remount
+
 echo "-------------------------------------------------------------"
 echo ""
 echo "       Congratulations, MiRouterSS installed complete!       "
