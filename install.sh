@@ -24,14 +24,15 @@ if [[ `id -u` -ne 0 ]]; then
 fi
 
 #Install
-read -p "Do you want to install MiRouterSS ？ (Y/n)" installSS
-if [[ "$installSS" = "Y" ]]; then
+read -p "Do you want to install MiRouterSS ？ (y/N)" install
+if [[ "$install" = "y" ]]; then
 cd /userdisk/data/
 if [[ -f MiRouterSS.tar.gz ]]; then
   rm -f MiRouterSS.tar.gz && rm -f MiRouterSS
 fi
 wget http://dl.jackyu.cn/attachments/MiRouterSS/MiRouterSS.tar.gz
 tar zxf MiRouterSS.tar.gz
+mkdir -p ./MiRouterSS/Backup
 
 # Install shadowsocks ss-redir to /usr/bin
 mount / -o rw,remount
@@ -44,8 +45,8 @@ cp ./MiRouterSS/shadowsocks /etc/init.d/shadowsocks
 chmod +x /etc/init.d/shadowsocks
 
 # Config ShadowSocks setting
-read -p "Do you want to create configuration file? (Y/n)" createConfig
-if [[ "$createConfig" = "Y" ]]; then
+read -p "Do you want to create configuration file? (y/N)" createConfig
+if [[ "$createConfig" = "y" ]]; then
   mkdir -p /etc/shadowsocks
   echo "-------------------------------------------------------------"
   echo ""
@@ -102,9 +103,11 @@ mount / -o ro,remount
 
 echo "-------------------------------------------------------------"
 echo ""
+echo ""
 echo "       Congratulations, MiRouterSS installed complete!       "
 echo ""
-echo "           Now, you can visit Google, Youtube, etc.          "
+echo "      For more information please visit https://jackyu.cn    "
+echo ""
 echo ""
 echo "-------------------------------------------------------------"
 echo ""

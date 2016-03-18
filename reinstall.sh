@@ -10,15 +10,21 @@ echo ""
 echo "              MiRouterSS v${Ver} Written by Jacky            "
 echo ""
 echo "-------------------------------------------------------------"
-
-read -p "Do you want to reinstall MiRouterSS ？ (Y/n)" reinstallSS
-if [[ "$reinstallSS" = "Y" ]]; then
 # Make sure only root can run our script
 if [[ `id -u` -ne 0 ]]; then
    echo "Error: This script must be run as root!" 1>&2
    exit 1
 fi
 
+# Make sure you have install Shadowsocks
+if [[ ! -f /etc/firewall.user.bak ]]; then
+	echo "Error: You haven't install Shadowsocks!"
+	exit 1
+fi
+
+# Reinstall
+read -p "Do you want to reinstall MiRouterSS ？ (y/N)" reinstall
+if [[ "$reinstall" = "y" ]]; then
 echo "Reinstalling MiRouterSS..."
 # Stop ss-redir process
 /etc/init.d/shadowsocks stop
@@ -30,9 +36,6 @@ rm -f /usr/bin/ss-redir
 sync
 mount / -o ro,remount
 
-cd /userdisk/data/
-rm -rf MiRouterSS
-
 # Delete config file
 rm -rf /etc/shadowsocks
 mv -f /etc/firewall.user.bak /etc/firewall.user
@@ -43,18 +46,8 @@ rm -f /etc/dnsmasq.d/fgset.conf
 /etc/init.d/dnsmasq restart
 /etc/init.d/firewall restart
 
-# Delete shadowsocks init file
-rm -f /etc/init.d/shadowsocks
-
-# Uncompress ShadowSocks
-cd /userdisk/data/
-if [[ -f MiRouterSS.tar.gz ]]; then
-rm -f MiRouterSS.tar.gz && rm -f MiRouterSS
-fi
-wget http://dl.jackyu.cn/attachments/MiRouterSS/MiRouterSS.tar.gz
-tar zxf MiRouterSS.tar.gz
-
 # Install shadowsocks ss-redir to /usr/bin
+cd /userdisk/data/
 mount / -o rw,remount
 cp -f ./MiRouterSS/ss-redir  /usr/bin/ss-redir
 chmod +x /usr/bin/ss-redir
@@ -62,7 +55,7 @@ sync
 mount / -o ro,remount
 
 # Config shadowsocks init script
-cp ./MiRouterSS/shadowsocks /etc/init.d/shadowsocks
+cp -f ./MiRouterSS/shadowsocks /etc/init.d/shadowsocks
 chmod +x /etc/init.d/shadowsocks
 
 # Config ShadowSocks setting
@@ -84,12 +77,12 @@ echo "iptables -t nat -A PREROUTING -p tcp -m set --match-set setmefree dst -j R
 /etc/init.d/shadowsocks start
 /etc/init.d/shadowsocks enable
 
-# Install successfully
-rm -rf /userdisk/data/ShadowSocksForMiRouter
-rm -rf /userdisk/data/ShadowSocksForMiRouter.tar.gz
+# Reinstall successfully
 echo "-------------------------------------------------------------"
 echo ""
+echo ""
 echo "       Congratulations, MiRouterSS Reinstalled complete!     "
+echo ""
 echo ""
 echo "-------------------------------------------------------------"
 echo ""
